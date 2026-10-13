@@ -1,0 +1,19 @@
+Canonical host: https://slotcrazymonkey.com (non-www).
+
+IMPORTANT: Cloudflare Pages _redirects cannot reliably redirect www to apex; configure Cloudflare Redirect Rules at the zone level, and ensure both www and apex DNS records are proxied (orange cloud), and www is connected to the Pages project as a custom domain when needed.
+
+Rule 1 (www -> apex, preserve paths and query strings):
+Expression: (http.host eq "www.slotcrazymonkey.com")
+Type: Dynamic redirect, 301
+Target expression: concat("https://slotcrazymonkey.com", http.request.uri.path)
+Preserve query string: ON
+
+Rule 2 (index.html -> /; use after www rule):
+Expression: (http.host eq "slotcrazymonkey.com" and http.request.uri.path eq "/index.html")
+Type: Static redirect, 301
+Destination: https://slotcrazymonkey.com/
+Preserve query string: ON
+
+Rule 3 (http -> https): configure Always Use HTTPS in SSL/TLS > Edge Certificates.
+
+Note: Pages _redirects rule for /index.html is included as a fallback, but Pages may prioritize a real index.html asset over a redirect. Use Rule 2 for a reliable redirect. For www/index.html, www -> apex/index.html -> apex/ is a two-hop chain; to make it a single hop, place a higher-priority rule for www + /index.html directly to apex /.

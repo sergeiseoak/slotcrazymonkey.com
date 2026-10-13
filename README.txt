@@ -1,0 +1,1 @@
+slotcrazymonkey.com — static site for Cloudflare Pages. Canonical host: https://slotcrazymonkey.com. Configure www -> apex and HTTP -> HTTPS at Cloudflare zone level. Affiliate route /go/ leads to an external registration page, not a built-in demo.
